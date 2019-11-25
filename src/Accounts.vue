@@ -40,17 +40,49 @@
         <h3>Create New Account</h3>
       </div>
 
-      <v-alert v-if="hasErrors" dense outlined type="error">Please fill in all fields.</v-alert>
+      <v-alert v-if="hasErrors" dense outlined type="error"
+        >Please fill in all fields.</v-alert
+      >
 
       <v-card-text>
-        <v-text-field v-model="name" label="Name*" placeholder="Customer Name" required></v-text-field>
+        <v-text-field
+          v-model="name"
+          label="Name*"
+          placeholder="Customer Name"
+          required
+        ></v-text-field>
 
-        <v-text-field v-model="father_name" label="Father Name" placeholder="Father Name" required></v-text-field>
+        <v-text-field
+          v-model="father_name"
+          label="Father Name"
+          placeholder="Father Name"
+          required
+        ></v-text-field>
 
-        <v-text-field v-model="address" label="Address" placeholder="Address" required></v-text-field>
-        <v-text-field v-model="email" label="Email" placeholder="Email" required></v-text-field>
-        <v-text-field v-model="nationality" label="Nationality" placeholder="Nationality" required></v-text-field>
-        <v-text-field v-model="cnic" label="Cnic" placeholder="Cnic" required></v-text-field>
+        <v-text-field
+          v-model="address"
+          label="Address"
+          placeholder="Address"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="email"
+          label="Email"
+          placeholder="Email"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="nationality"
+          label="Nationality"
+          placeholder="Nationality"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="cnic"
+          label="Cnic"
+          placeholder="Cnic"
+          required
+        ></v-text-field>
         <v-text-field
           v-model="mobile_number"
           label="Mobile Number"
@@ -78,9 +110,25 @@
       <h1>Accounts</h1>
 
       <div>
-        <v-data-table dense :headers="headers" :items="account " item-key="name" class="data">
+        <v-data-table
+          dense
+          :headers="headers"
+          :items="account"
+          item-key="name"
+          class="data"
+        >
+          <template v-slot:item.name="{ item }">
+            <v-btn text color="primary" @click="showAccount(item.id)">{{
+              item.name
+            }}</v-btn>
+          </template>
           <template v-slot:item.action="{ item }">
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+          </template>
+          <template v-slot:item.view="{ item }">
+            <v-icon small @click="showAccount(item.id)"
+              >mdi-contactless-payment</v-icon
+            >
           </template>
         </v-data-table>
       </div>
@@ -130,7 +178,8 @@ export default {
       { text: "Email", value: "email" },
       { text: "Nationality", value: "nationality" },
       { text: "Nature Of Account", value: "nature_of_account" },
-      { text: "Actions", value: "action", sortable: false }
+      { text: "Actions", value: "action", sortable: false },
+      { text: "View", value: "view", sortable: false }
     ],
     hasErrors: false,
     account: [],
@@ -144,6 +193,9 @@ export default {
     nature_of_account: null
   }),
   methods: {
+    showAccount(id) {
+      this.$router.push(`/accountdetails/${id}`);
+    },
     async deleteItem(item) {
       if (confirm("Are you sure you want to delete this item?")) {
         await axios.delete(`http://localhost:1337/accounts/${item.id}`);
@@ -151,6 +203,7 @@ export default {
         this.fetch();
       }
     },
+
     async save() {
       this.hasErrors = false;
       const formData = new FormData();
@@ -203,7 +256,11 @@ export default {
       });
       this.account = response.data;
     }
+    // async viewItem(item) {
+    //   await axios.get(`http://localhost:1337/accounts/${item.id}`);
+    // }
   },
+
   async mounted() {
     this.fetch();
   }

@@ -6,6 +6,14 @@ import VueRouter from "vue-router";
 import Accounts from "../src/Accounts.vue";
 import CashBook from "../src/CashBook.vue";
 import Journal from "../src/Journal.vue";
+import Details from "../src/Details.vue";
+import moment from "moment";
+
+Vue.filter("formatDate", function(value) {
+  if (value) {
+    return moment(String(value)).format("MM/DD/YYYY hh:mm");
+  }
+});
 
 Vue.use(Vuelidate);
 Vue.use(VueRouter);
@@ -13,7 +21,8 @@ Vue.use(VueRouter);
 const routes = [
   { name: "accounts", path: "/accounts", component: Accounts },
   { name: "cashbook", path: "/", component: CashBook },
-  { name: "journal", path: "/journal", component: Journal }
+  { name: "journal", path: "/journal", component: Journal },
+  { name: "accountdetails", path: "/accountdetails/:id", component: Details }
 ];
 const router = new VueRouter({
   routes // short for `routes: routes`

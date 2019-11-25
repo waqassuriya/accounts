@@ -22,9 +22,9 @@
                 <v-select
                   :items="items"
                   item-text="name"
-                  item-value="name"
+                  item-value="id"
                   label="Account Name"
-                  v-model="nature_of_account"
+                  v-model="account"
                   placeholder="Account Name"
                 ></v-select>
               </v-col>
@@ -56,6 +56,13 @@
                     item-key="name"
                     class="data"
                   >
+                    <template v-slot:item.account="{ item }">
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="showAccount(item.account.id)"
+                      >{{item.account ? item.account.name : 'N/A'}}</v-btn>
+                    </template>
                     <template v-slot:item.action="{ item }">
                       <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
                     </template>
@@ -88,7 +95,7 @@ export default {
     first: "",
     files: [],
     items: [],
-    nature_of_account: null,
+    account: null,
     description: "",
     debit: 0,
     credit: 0,
@@ -96,7 +103,7 @@ export default {
     hasErrors: false,
     headers: [
       { text: "Created", value: "created_at" },
-      { text: "Name Of Account", value: "nature_of_account" },
+      { text: "Name Of Account", value: "account" },
       { text: "Description", value: "description" },
       { text: "Debit", value: "debit" },
       { text: "Credit", value: "credit" },
@@ -104,6 +111,9 @@ export default {
     ]
   }),
   methods: {
+    showAccount(id) {
+      this.$router.push(`/accountdetails/${id}`);
+    },
     async fetchAccounts() {
       const response = await axios.get("http://localhost:1337/accounts");
       this.items = response.data;
@@ -123,24 +133,25 @@ export default {
       formData.append(
         "data",
         JSON.stringify({
-          nature_of_account: this.nature_of_account,
+          account: this.account,
           description: this.description,
           debit: this.debit,
           credit: this.credit
         })
       );
-      if (this.nature_of_account === null) {
+      if (this.account === null) {
         this.hasErrors = true;
       } else if (this.description === "") {
         this.hasErrors = true;
-        // } else if (this.debit === "") {
-        //   this.hasErrors = true;
-        // } else if (this.credit === "") {
-        //   this.hasErrors = true;
-      } else {
+      } else if (this.debit === "" && this.credit === "") {
+        this.hasErrors = true;
+      }
+      // } else if (this.credit === "") {
+      //   this.hasErrors = true;
+      else {
         await axios.post("http://localhost:1337/journals", formData);
         this.fetch();
-        this.nature_of_account = null;
+        this.account = null;
         this.description = "";
         this.debit = 0;
         this.credit = 0;
