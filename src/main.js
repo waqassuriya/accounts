@@ -8,10 +8,17 @@ import CashBook from "../src/CashBook.vue";
 import Journal from "../src/Journal.vue";
 import Details from "../src/Details.vue";
 import moment from "moment";
+import VueHtmlToPaper from "vue-html-to-paper";
+
+Vue.use(VueHtmlToPaper);
+
+// or, using the defaults with no stylesheet
+
+// Vue.use(VueHtmlToPaper);
 
 Vue.filter("formatDate", function(value) {
   if (value) {
-    return moment(String(value)).format("MM/DD/YYYY hh:mm");
+    return moment(String(value)).format("MM/DD/YYYY");
   }
 });
 

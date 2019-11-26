@@ -29,20 +29,34 @@
                 ></v-select>
               </v-col>
               <v-col>
-                <v-text-field v-model="description" label="Description" placeholder="Description  "></v-text-field>
+                <v-text-field
+                  v-model="description"
+                  label="Description"
+                  placeholder="Description  "
+                ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field v-model="debit" label="Debit" placeholder="25000"></v-text-field>
+                <v-text-field
+                  v-model="debit"
+                  label="Debit"
+                  placeholder="25000"
+                ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field v-model="credit" label="Credit" placeholder="25000"></v-text-field>
+                <v-text-field
+                  v-model="credit"
+                  label="Credit"
+                  placeholder="25000"
+                ></v-text-field>
               </v-col>
               <v-col>
                 <v-btn color="primary" type="submit" text>Submit</v-btn>
               </v-col>
             </v-row>
           </v-form>
-          <v-alert v-if="hasErrors" dense outlined type="error">Please fill in all fields.</v-alert>
+          <v-alert v-if="hasErrors" dense outlined type="error"
+            >Please fill in all fields.</v-alert
+          >
           <v-row no-gutters>
             <v-col>
               <div class="list">
@@ -61,10 +75,13 @@
                         text
                         color="primary"
                         @click="showAccount(item.account.id)"
-                      >{{item.account ? item.account.name : 'N/A'}}</v-btn>
+                        >{{ item.account ? item.account.name : "N/A" }}</v-btn
+                      >
                     </template>
                     <template v-slot:item.action="{ item }">
-                      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+                      <v-icon small @click="deleteItem(item)"
+                        >mdi-delete</v-icon
+                      >
                     </template>
                   </v-data-table>
                 </div>
@@ -79,7 +96,7 @@
           <v-col>
             <v-row>TOTAL DEBIT: {{ totalDebit }}</v-row>
             <v-row>TOTAL CREDIT: {{ totalCredit }}</v-row>
-            <v-row>TOTAL BALANCE: {{totalBalance}}</v-row>
+            <v-row>TOTAL BALANCE: {{ totalBalance }}</v-row>
           </v-col>
         </div>
       </template>
@@ -184,7 +201,7 @@ export default {
       return creditTotal;
     },
     totalBalance: function() {
-      return this.totalDebit - this.totalCredit;
+      return this.totalCredit - this.totalDebit;
     }
   }
 };

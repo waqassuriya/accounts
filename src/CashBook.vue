@@ -6,6 +6,7 @@
       <v-toolbar-items>
         <v-btn text @click="$router.push('/accounts')">Go To Accounts</v-btn>
         <v-btn text @click="$router.push('/journal')">Go To Journal</v-btn>
+
         <v-spacer></v-spacer>
       </v-toolbar-items>
     </v-toolbar>
@@ -48,6 +49,7 @@
             </v-col>
             <v-col>
               <v-btn color="primary" text @click="save">Submit</v-btn>
+              <v-btn @click="print">Print</v-btn>
             </v-col>
           </v-row>
           <v-alert v-if="hasErrors" dense outlined type="error"
@@ -55,10 +57,10 @@
           >
           <v-row no-gutters>
             <v-col>
-              <div class="list">
+              <div class="list" id="list">
                 <h1>CASHBOOK</h1>
 
-                <div>
+                <div class="grid">
                   <v-data-table
                     dense
                     :headers="headers"
@@ -101,29 +103,8 @@ import axios from "axios";
 
 export default {
   data: () => ({
+    output: null,
     items: [],
-    // { value: "ACCRUED_EXPENSES", text: "Accrued Expenses" },
-    // { value: "CURRENT_LIABILITIES", text: "Current Liabilities" },
-    // { value: "DEFERRED_LIABILITIES", text: "Deferred Liabilities" },
-    // { value: "LONG_TERM_LIABILITIES", text: "Long Term Liabilities" },
-    // { value: "LONG_TERM_LOAN", text: "Long Term Loan" },
-    // { value: "BOOKING_RECIEPTS", text: "Booking Reciepts" },
-    // { value: "OTHER_INCOME", text: "Other Income" },
-    // { value: "ADMINISTRATION", text: "Administration" },
-    // { value: "CONSTRUCTION_COST", text: "Construction Cost" },
-    // { value: "FINANCIAL_CHARGES", text: "Financial Charges" },
-    // { value: "MARKETING", text: "Marketing" },
-    // { value: "ACCUMULATED_AMORTIZATION", text: "Accumulated Amortization" },
-    // { value: "ACCUMULATED_DEPRECIATION", text: "Accumulated Depreciation" },
-    // { value: "CURRENT_ASSETS", text: "Current Assets" },
-    // { value: "FIXED_ASSETS", text: "Fixed Assets" },
-    // { value: "INTANGIBLE_ASSETS", text: "Intangible Assets" },
-    // { value: "LONG_TERM_LOANS_ADVANCES", text: "Long Term Loans & Advances" },
-    // { value: "NEW_ASSET_EXAMPLE", text: "New Asset Example" },
-    // { value: "EQUITY", text: "Equity" },
-    // { value: "PARTNERS_CAPITAL", text: "Partners' Capital" },
-    // { value: "PARTNERS_DRAWING", text: "Partners' Drawing" }
-
     first: "",
     files: [],
     account: null,
@@ -140,6 +121,10 @@ export default {
     ]
   }),
   methods: {
+    print() {
+      // Pass the element id here
+      this.$htmlToPaper("list");
+    },
     showAccount(id) {
       this.$router.push(`/accountdetails/${id}`);
     },
@@ -176,7 +161,7 @@ export default {
         this.hasErrors = true;
       } else {
         await axios.post("http://localhost:1337/cashbooks", formData);
-        // await axios.post("http://localhost:1337/journals", formData);
+
         this.fetch();
         this.account = null;
         this.description = "";

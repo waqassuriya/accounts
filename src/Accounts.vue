@@ -40,49 +40,17 @@
         <h3>Create New Account</h3>
       </div>
 
-      <v-alert v-if="hasErrors" dense outlined type="error"
-        >Please fill in all fields.</v-alert
-      >
+      <v-alert v-if="hasErrors" dense outlined type="error">Please fill in all fields.</v-alert>
 
       <v-card-text>
-        <v-text-field
-          v-model="name"
-          label="Name*"
-          placeholder="Customer Name"
-          required
-        ></v-text-field>
+        <v-text-field v-model="name" label="Name*" placeholder="Customer Name" required></v-text-field>
 
-        <v-text-field
-          v-model="father_name"
-          label="Father Name"
-          placeholder="Father Name"
-          required
-        ></v-text-field>
+        <v-text-field v-model="father_name" label="Father Name" placeholder="Father Name" required></v-text-field>
 
-        <v-text-field
-          v-model="address"
-          label="Address"
-          placeholder="Address"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="email"
-          label="Email"
-          placeholder="Email"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="nationality"
-          label="Nationality"
-          placeholder="Nationality"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="cnic"
-          label="Cnic"
-          placeholder="Cnic"
-          required
-        ></v-text-field>
+        <v-text-field v-model="address" label="Address" placeholder="Address" required></v-text-field>
+        <v-text-field v-model="email" label="Email" placeholder="Email" required></v-text-field>
+        <v-text-field v-model="nationality" label="Nationality" placeholder="Nationality" required></v-text-field>
+        <v-text-field v-model="cnic" label="Cnic" placeholder="Cnic" required></v-text-field>
         <v-text-field
           v-model="mobile_number"
           label="Mobile Number"
@@ -110,25 +78,19 @@
       <h1>Accounts</h1>
 
       <div>
-        <v-data-table
-          dense
-          :headers="headers"
-          :items="account"
-          item-key="name"
-          class="data"
-        >
+        <v-data-table dense :headers="headers" :items="account" item-key="name" class="data">
           <template v-slot:item.name="{ item }">
-            <v-btn text color="primary" @click="showAccount(item.id)">{{
+            <v-btn text color="primary" @click="showAccount(item.id)">
+              {{
               item.name
-            }}</v-btn>
+              }}
+            </v-btn>
           </template>
           <template v-slot:item.action="{ item }">
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
           </template>
           <template v-slot:item.view="{ item }">
-            <v-icon small @click="showAccount(item.id)"
-              >mdi-contactless-payment</v-icon
-            >
+            <v-icon small @click="showAccount(item.id)">mdi-contactless-payment</v-icon>
           </template>
         </v-data-table>
       </div>
@@ -256,9 +218,6 @@ export default {
       });
       this.account = response.data;
     }
-    // async viewItem(item) {
-    //   await axios.get(`http://localhost:1337/accounts/${item.id}`);
-    // }
   },
 
   async mounted() {
